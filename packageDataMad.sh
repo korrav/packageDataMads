@@ -54,6 +54,9 @@ fileArch=${currentDate}_$suf.tar
 if [ -f $fileArch ]
 then
 	curPart=`tar -tf $fileArch | awk -F. '/^[0-9]+\.tar$/{print $1}' | sort -n | tail -n 1`
+	if [ -z "$curPart" ];then
+		curPart=0
+	fi	
 	nParts=$curPart
 fi
 while [ 1 ]
@@ -73,6 +76,7 @@ do	#перебор по датам
 			addToArchive
 			nParts=0
 			createPartsFile
+			gzip $fileArch &
 			break
 		fi
 	done
